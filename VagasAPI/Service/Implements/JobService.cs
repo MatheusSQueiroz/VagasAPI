@@ -1,11 +1,16 @@
-﻿using VagasAPI.Model;
+﻿using VagasAPI.Data;
+using VagasAPI.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace VagasAPI.Service.Implements
 {
     public class JobService : IJobService
     {
-        public JobService()
+        private readonly AppDbContext _context;
+
+        public JobService(AppDbContext context)
         {
+            _context = context;
         }
 
         public Task<Job?> Create(Job job)
