@@ -13,34 +13,63 @@ namespace VagasAPI.Service.Implements
             _context = context;
         }
 
-        public Task<Job?> Create(Job job)
+        public async Task<IEnumerable<Job>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Jobs
+                .ToListAsync();
         }
 
-        public Task Delete(Job job)
+        public async Task<Job?> GetById(long id)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                var Vagas = await _context.Jobs
+                        .FirstAsync(i => i.Id == id);
+                return Vagas;
+
+            }
+            catch
+            {
+                return null;
+            }
+
         }
 
-        public Task<IEnumerable<Job>> GetAll()
+        public async Task<IEnumerable<Job?>> GetByTitle(string title)
         {
-            throw new NotImplementedException();
+            var Postagem = await _context.Jobs
+                                 .Where(p => p.Title.Contains(title))
+                                 .ToListAsync();
+            return Postagem;
         }
 
-        public Task<Job?> GetById(long id)
+        public async Task<Job?> Create(Job job)
         {
-            throw new NotImplementedException();
+            await _context.Jobs.AddAsync(job);
+            await _context.SaveChangesAsync();
+
+            return job;
         }
 
-        public Task<IEnumerable<Job?>> GetByTitle(string title)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<Job?> Update(Job job)
+        public async Task<Job?> Update(Job job)
         {
-            throw new NotImplementedException();
+            var JobUpdate = await _context.Jobs.FindAsync(job.Id);
+
+            if (JobUpdate is null)
+                return null;
+
+            _context.Entry(JobUpdate).State = EntityState.Detached;
+            _context.Entry(job).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return job;
+        }
+        public async Task Delete(Job job)
+        {
+            _context.Remove(job);
+            await _context.SaveChangesAsync();
         }
     }
 }
