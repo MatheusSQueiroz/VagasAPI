@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using VagasAPI.Service;
 
-[ApiController]
-[Route("~/vagas")]
-public class JobsController : ControllerBase
+namespace VagasAPI.Controller
 {
-    
+    public class JobController
+    {
+        
+    }
 }
